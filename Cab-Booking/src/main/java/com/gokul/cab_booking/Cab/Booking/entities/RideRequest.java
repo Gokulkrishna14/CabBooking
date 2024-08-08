@@ -21,6 +21,8 @@ public class RideRequest {
     @Column(columnDefinition = "Geometry(Point, 4326)")
     private Point pickupLocation;
 
+    private Double fare;
+
     @Column(columnDefinition = "Geometry(Point, 4326)")
     private Point dropOffLocation;
 

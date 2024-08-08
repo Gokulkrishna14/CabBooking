@@ -1,5 +1,6 @@
 package com.gokul.cab_booking.Cab.Booking.entities;
 
+import com.gokul.cab_booking.Cab.Booking.entities.enums.Roles;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +27,6 @@ public class User {
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
-    private Set<Role> roles;
+    private Set<Roles> roles;
 
 }

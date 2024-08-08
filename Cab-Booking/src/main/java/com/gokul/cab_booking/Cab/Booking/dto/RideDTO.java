@@ -32,6 +32,8 @@ public class RideDTO {
 
     private PaymentMethod paymentMethod;
 
+    private String otp;
+
 
     private RideStatus rideStatus;
 

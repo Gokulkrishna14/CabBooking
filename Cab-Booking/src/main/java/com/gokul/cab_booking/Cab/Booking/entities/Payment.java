@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Payment {
@@ -17,7 +18,7 @@ public class Payment {
     private PaymentMethod paymentMethod;
 
     @OneToMany(fetch = FetchType.LAZY)
-    private Ride ride;
+    private List<Ride> ride;
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
