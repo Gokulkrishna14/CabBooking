@@ -2,7 +2,6 @@ package com.gokul.cab_booking.Cab.Booking.configs;
 
 import com.gokul.cab_booking.Cab.Booking.dto.PointDTO;
 import com.gokul.cab_booking.Cab.Booking.utils.GeometryUtil;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
