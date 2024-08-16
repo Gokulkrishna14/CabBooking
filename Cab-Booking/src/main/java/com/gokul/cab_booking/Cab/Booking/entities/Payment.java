@@ -3,12 +3,17 @@ package com.gokul.cab_booking.Cab.Booking.entities;
 import com.gokul.cab_booking.Cab.Booking.entities.enums.PaymentMethod;
 import com.gokul.cab_booking.Cab.Booking.entities.enums.PaymentStatus;
 import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,8 +22,8 @@ public class Payment {
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Ride> ride;
+    @OneToOne(fetch = FetchType.LAZY)
+    private Ride ride;
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;

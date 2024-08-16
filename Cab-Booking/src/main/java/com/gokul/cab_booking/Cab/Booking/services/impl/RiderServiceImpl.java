@@ -4,20 +4,22 @@ import com.gokul.cab_booking.Cab.Booking.dto.DriverDTO;
 import com.gokul.cab_booking.Cab.Booking.dto.RideDTO;
 import com.gokul.cab_booking.Cab.Booking.dto.RideRequestDTO;
 import com.gokul.cab_booking.Cab.Booking.dto.RiderDTO;
-import com.gokul.cab_booking.Cab.Booking.entities.Driver;
-import com.gokul.cab_booking.Cab.Booking.entities.RideRequest;
-import com.gokul.cab_booking.Cab.Booking.entities.Rider;
-import com.gokul.cab_booking.Cab.Booking.entities.User;
+import com.gokul.cab_booking.Cab.Booking.entities.*;
 import com.gokul.cab_booking.Cab.Booking.entities.enums.RideRequestStatus;
+import com.gokul.cab_booking.Cab.Booking.entities.enums.RideStatus;
 import com.gokul.cab_booking.Cab.Booking.exception.ResourceNotFoundException;
 import com.gokul.cab_booking.Cab.Booking.repositories.RideRequestRepository;
 import com.gokul.cab_booking.Cab.Booking.repositories.RiderRepository;
+import com.gokul.cab_booking.Cab.Booking.services.DriverService;
+import com.gokul.cab_booking.Cab.Booking.services.RideService;
 import com.gokul.cab_booking.Cab.Booking.services.RiderService;
 import com.gokul.cab_booking.Cab.Booking.stategies.StrategyManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,6 +36,10 @@ public class RiderServiceImpl implements RiderService {
     private final RideRequestRepository rideRequestRepository;
 
     private final RiderRepository riderRepository;
+
+    private final RideService rideService;
+
+    private final DriverService driverService;
 
 
     @Override
@@ -58,6 +64,19 @@ public class RiderServiceImpl implements RiderService {
 
     @Override
     public RideDTO cancelRide(Long rideId) {
+        Rider rider = getCurrentRider();
+        Ride ride = rideService.getRideById(rideId);
+
+        if(!rider.equals(ride.getRider())){
+            throw new RuntimeException("Rider doesn not own this ride with id "+ rideId);
+        }
+
+        if(!ride.getRideStatus().equals(RideStatus.CONFIRMED)){
+            throw new RuntimeException("Ride cannot be cancelled, invalid status "+ ride.getRideStatus());
+        }
+
+        Ride savedRide = rideService.updateRideStatus(ride, RideStatus.CANCELLED);
+        driverService.updateDriverAvailability(savedRide.getDriver(), true);
         return null;
     }
 
@@ -68,12 +87,16 @@ public class RiderServiceImpl implements RiderService {
 
     @Override
     public RiderDTO getMyProfile() {
-        return null;
+        Rider currentRider = getCurrentRider();
+        return modelMapper.map(currentRider, RiderDTO.class);
     }
 
     @Override
-    public List<RideDTO> getAllMyRides() {
-        return List.of();
+    public Page<RideDTO> getAllMyRides(PageRequest pageRequest) {
+        Rider currentRider= getCurrentRider();
+        return rideService.getAllRidesOfRider(currentRider, pageRequest).map(
+                ride -> modelMapper.map(ride, RideDTO.class)
+        );
     }
 
     @Override

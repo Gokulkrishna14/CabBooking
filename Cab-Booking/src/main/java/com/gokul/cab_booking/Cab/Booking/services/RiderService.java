@@ -6,8 +6,8 @@ import com.gokul.cab_booking.Cab.Booking.dto.RideRequestDTO;
 import com.gokul.cab_booking.Cab.Booking.dto.RiderDTO;
 import com.gokul.cab_booking.Cab.Booking.entities.Rider;
 import com.gokul.cab_booking.Cab.Booking.entities.User;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 public interface RiderService {
 
@@ -20,7 +20,7 @@ public interface RiderService {
 
     RiderDTO getMyProfile();
 
-    List<RideDTO> getAllMyRides();
+    Page<RideDTO> getAllMyRides(PageRequest pageRequest);
 
     Rider createNewRider(User user);
 

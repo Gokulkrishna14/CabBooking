@@ -3,11 +3,17 @@ package com.gokul.cab_booking.Cab.Booking.entities;
 import com.gokul.cab_booking.Cab.Booking.entities.enums.TransactionMethod;
 import com.gokul.cab_booking.Cab.Booking.entities.enums.TransactionType;
 import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class WalletTransaction {
 
     @Id
@@ -22,7 +28,7 @@ public class WalletTransaction {
     @Enumerated(EnumType.STRING)
     private TransactionMethod transactionMethod;
 
-    @OneToOne
+    @ManyToOne
     private Ride ride;
 
     private String transactionId;

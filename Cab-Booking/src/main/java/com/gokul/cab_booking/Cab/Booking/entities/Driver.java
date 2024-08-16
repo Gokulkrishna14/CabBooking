@@ -20,7 +20,7 @@ public class Driver {
 
     private Double rating;
 
-    private String driverId;
+    private String vehicleId;
 
     private Boolean available;
 

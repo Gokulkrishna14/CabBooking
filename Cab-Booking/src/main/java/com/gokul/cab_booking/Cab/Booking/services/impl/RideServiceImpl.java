@@ -4,6 +4,7 @@ import com.gokul.cab_booking.Cab.Booking.dto.RideRequestDTO;
 import com.gokul.cab_booking.Cab.Booking.entities.Driver;
 import com.gokul.cab_booking.Cab.Booking.entities.Ride;
 import com.gokul.cab_booking.Cab.Booking.entities.RideRequest;
+import com.gokul.cab_booking.Cab.Booking.entities.Rider;
 import com.gokul.cab_booking.Cab.Booking.entities.enums.RideRequestStatus;
 import com.gokul.cab_booking.Cab.Booking.entities.enums.RideStatus;
 import com.gokul.cab_booking.Cab.Booking.exception.ResourceNotFoundException;
@@ -58,13 +59,13 @@ public class RideServiceImpl implements RideService {
     }
 
     @Override
-    public Page<Ride> getAllRidesOfRider(Long riderId, PageRequest pageRequest) {
-        return null;
+    public Page<Ride> getAllRidesOfRider(Rider rider, PageRequest pageRequest) {
+        return rideRepository.findByRider(rider, pageRequest);
     }
 
     @Override
-    public Page<Ride> getAllRidesOfDriver(Long driverId, PageRequest pageRequest) {
-        return null;
+    public Page<Ride> getAllRidesOfDriver(Driver driver, PageRequest pageRequest) {
+        return rideRepository.findByDriver(driver, pageRequest);
     }
 
     private String generateRandomOTP(){
