@@ -11,6 +11,7 @@ import com.gokul.cab_booking.Cab.Booking.exception.ResourceNotFoundException;
 import com.gokul.cab_booking.Cab.Booking.repositories.RideRequestRepository;
 import com.gokul.cab_booking.Cab.Booking.repositories.RiderRepository;
 import com.gokul.cab_booking.Cab.Booking.services.DriverService;
+import com.gokul.cab_booking.Cab.Booking.services.RateService;
 import com.gokul.cab_booking.Cab.Booking.services.RideService;
 import com.gokul.cab_booking.Cab.Booking.services.RiderService;
 import com.gokul.cab_booking.Cab.Booking.stategies.StrategyManager;
@@ -40,6 +41,8 @@ public class RiderServiceImpl implements RiderService {
     private final RideService rideService;
 
     private final DriverService driverService;
+
+    private final RateService rateService;
 
 
     @Override
@@ -82,7 +85,18 @@ public class RiderServiceImpl implements RiderService {
 
     @Override
     public DriverDTO rateDriver(Long rideId, Integer rating) {
-        return null;
+        Ride ride = rideService.getRideById(rideId);
+
+        Rider rider = getCurrentRider();
+
+        if(!rider.equals(ride.getRider())){
+            throw new RuntimeException("Rider is not the owner of this ride");
+        }
+
+        if(!ride.getRideStatus().equals(RideStatus.ENDED)){
+            throw new RuntimeException("Ride status is not ended hence cannot be rate rider "+ ride.getRideStatus());
+        }
+        return rateService.rateDriver(ride, rating);
     }
 
     @Override
