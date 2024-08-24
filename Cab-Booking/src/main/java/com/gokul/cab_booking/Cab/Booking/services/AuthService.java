@@ -6,10 +6,11 @@ import com.gokul.cab_booking.Cab.Booking.dto.UserDTO;
 
 public interface AuthService {
 
-    String login(String email, String password);
+    String[] login(String email, String password);
 
     UserDTO signup(SignUpDTO signUpDTO);
 
     DriverDTO onboardNewDriver(Long userId, String vehicleId);
 
+    String refreshToken(String refreshToken);
 }
